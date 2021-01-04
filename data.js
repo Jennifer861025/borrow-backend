@@ -3,55 +3,59 @@ const bcrypt = require('bcryptjs');
 const data = {
   users: [
     {
-      name: "Ntue",
-      email: "user1@example.com",
-      password: bcrypt.hashSync("1234", 8),
-      isAdmin: false,
-      makeups: [
-    
-      ],
-      methods: [
-    
-      ],
+      name: "郭昀甄",
+      number: "110934002",
+      password: bcrypt.hashSync("0000", 8),
+      identity:"student"
     },
     {
-      name: "Dtd",
-      email: "user2@example.com",
-      password: bcrypt.hashSync("1234", 8),
-      isAdmin: false,
-      makeups: [
-    
-      ],
-      methods: [
-    
-      ],
+      name: "史欣悅",
+      number: "12345",
+      password: bcrypt.hashSync("0000", 8),
+      identity:"teacher"
+    },
+    {
+      name: "車銀優",
+      number: "111",
+      password: bcrypt.hashSync("111", 8),
+      identity:"teacher"
+    },
+    {
+      name: "車永裴",
+      number: "222",
+      password: bcrypt.hashSync("222", 8),
+      identity:"student"
     },
   ],
-  makeupsdata: [
+  items: [
     {
-      "title":"PONY EFFECT 極水透光氣墊粉餅",
-      "img":"./makeup/foundation.png",
-      "color_choose":["自然色","明亮白"],
-      "color_code_choose":["E2BF9F","EFCDAA"]
+      type: "key",
+      name: "E811教室",
+      image: "./images/E811.jpg",
+      cantBorrowDate: ["2021-1-2", "2021-1-3", "2021-1-9", "2021-1-10", "2021-1-16", "2021-1-17", "2021-1-23", "2021-1-24", "2021-1-30", "2021-1-31",
+       "2021-2-6", "2021-2-7", "2021-2-13", "2021-2-14", "2021-2-20", "2021-2-21", "2021-2-27", "2021-2-28"],
     },
     {
-        "title":"Za潮色邂逅唇彩 極霧款",
-        "img":"./makeup/RD622.png",
-        "color_choose":["RD408","PK456"],
-        "color_code_choose":["CC5953","FFE8E7"]
+      type: "key",
+      name: "E812教室",
+      image: "./images/E812.jpg",
+      cantBorrowDate: ["2021-1-2", "2021-1-3", "2021-1-9", "2021-1-10", "2021-1-16", "2021-1-17", "2021-1-23", "2021-1-24", "2021-1-30", "2021-1-31",
+      "2021-2-6", "2021-2-7", "2021-2-13", "2021-2-14", "2021-2-20", "2021-2-21", "2021-2-27", "2021-2-28"]
     },
     {
-        "title":"Za潮色邂逅唇彩 水潤款",
-        "img":"./makeup/pRS460.png",
-        "color_choose":["RS460","RD666","RD333","RD420","RS352"],
-        "color_code_choose":["E84560","D23840","E1464C","E03837","AF4E83"]
+      type: "equipment",
+      name: "延長線",
+      image: "./images/extensionCord.jpg",
+      cantBorrowDate: ["2021-1-2", "2021-1-3", "2021-1-9", "2021-1-10", "2021-1-16", "2021-1-17", "2021-1-23", "2021-1-24", "2021-1-30", "2021-1-31",
+      "2021-2-6", "2021-2-7", "2021-2-13", "2021-2-14", "2021-2-20", "2021-2-21", "2021-2-27", "2021-2-28"],
     },
     {
-        "title":"Za美白聚光粉底精華",
-        "img":"./makeup/ZALiquidFoundation.png",
-        "color_choose":["OC0W","OC00","OC10","OC20","PO10"],
-        "color_code_choose":["EBC29D","E6B993","E0B28A","DFB189","E7BD9A"]
-    }
-  ]
+      type: "equipment",
+      name: "轉接頭",
+      image: "./images/adapter.jpg",
+      cantBorrowDate: ["2021-1-2", "2021-1-3", "2021-1-9", "2021-1-10", "2021-1-16", "2021-1-17", "2021-1-23", "2021-1-24", "2021-1-30", "2021-1-31",
+      "2021-2-6", "2021-2-7", "2021-2-13", "2021-2-14", "2021-2-20", "2021-2-21", "2021-2-27", "2021-2-28"]
+    },
+  ],
 };
 module.exports = data;

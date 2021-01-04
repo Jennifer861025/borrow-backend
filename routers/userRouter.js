@@ -1,10 +1,12 @@
 const express = require('express');
 const expressAsyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
+const data = require("../data.js");
 const User = require('../models/userModel');
-const userRouter = express.Router();
-const { getToken, isAuth } = require("../util");
 
+const userRouter = express.Router();
+
+//使用者原始資料
 userRouter.get(
   "/seed",
   expressAsyncHandler(async (req, res) => {
@@ -13,96 +15,61 @@ userRouter.get(
     res.send({ createdUsers });
   })
 );
-//登入
+
+//使用者登入
 userRouter.post(
-  "/signin",
+  "/login",
   expressAsyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const { number, password } = req.body;
+    const user = await User.findOne({ number });
     if (user) {
       if (bcrypt.compareSync(password, user.password)) {
         res.send({
           _id: user._id,
           name: user.name,
-          email: user.email,
-          password: user.password,
-          isAdmin: user.isAdmin,
-          year: user.year,
-          month: user.month,
-          day: user.day,
-          sex: user.sex,
-          token: getToken(user),
+          number: user.number,
+          identity: user.identity,
+          reserved: user.reserved
         });
         return;
+      }else{
+        res.status(402).send({ message: "Invalid password" });
       }
+    }else{
+      res.status(401).send({ message: "Invalid number" });
     }
-    res.status(401).send({ message: "Invalid email or password" });
   })
 );
-//註冊
-userRouter.post(
-  "/register",
-  expressAsyncHandler(async (req, res) => {
-    const { name, email, password, year, month, day, sex } = req.body;
-    const user = new User({
-      name,
-      email,
-      password: bcrypt.hashSync(password, 8),
-      year,
-      month,
-      day,
-      sex,
-    });
-    const createdUser = await user.save();
-    res.send({
-      _id: createdUser._id,
-      name: createdUser.name,
-      email: createdUser.email,
-      password: createdUser.password,
-      isAdmin: createdUser.isAdmin,
-      year: createdUser.year,
-      month: createdUser.month,
-      day: createdUser.day,
-      sex: createdUser.sex,
-      token: getToken(user),
-    });
-  })
-);
-//改資料
+
+//新增使用者預約紀錄
 userRouter.put(
-  "/profile/:id",
-  isAuth,
+  "/addReserved",
   expressAsyncHandler(async (req, res) => {
-    const { name, email, password, year, month, day, sex } = req.body;
-    // password = bcrypt.hashSync(req.body.password, 8);
-    const psw = bcrypt.hashSync(password, 8);
-    User.findOneAndUpdate({ _id: req.params.id }, {
-      "name": name,
-      "email": email,
-      "password": psw,
-      "year": year,
-      "month": month,
-      "day": day,
-      "sex": sex,
-    }, { new: true }, (err, doc) => {
-      if (err) {
-        console.log("Something wrong when updating data!");
-      }
-      console.log(doc);
-    });
-    const user = await User.findById({ _id: req.params.id });
-    res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      password: user.password,
-      year: user.year,
-      month: user.month,
-      day: user.day,
-      sex: user.sex,
-      token: getToken(user),
-    });
+    const { number, reservedName, reservedDate } = req.body;
+    const user = await User.findOne({ number });
+    if (user) {
+      const reserved = await User.update({ number } ,{$push: { reserved: {reservedName, reservedDate}}});
+      res.send(
+        user
+      );
+    } else {
+      res.status(404).send({ message: "User Not Found" });
+    }
+  })
+);
+
+//刪除使用者預約紀錄
+userRouter.put(
+  "/deleteReserved",
+  expressAsyncHandler(async (req, res) => {
+    const { number, reservedName, reservedDate } = req.body;
+    const user = await User.findOne({ number });
+    if (user) {
+      const reserved = await User.update({ number } ,{$pull: { reserved: {reservedName, reservedDate}}});
+      res.send(reserved);
+    } else {
+      res.status(404).send({ message: "User Not Found" });
+    }
   })
 );
 
